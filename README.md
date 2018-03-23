@@ -1,6 +1,6 @@
 BotMan                                 |  SharkyBoy
 :-------------------------------------:|:-------------------------:
-![](https://botman.io/img/botman.png)  |  ![](https://qnabot.000webhostapp.com/qnabot/public/image/Sharkboy2_0_big.png)
+<img height="188" width="198" src="https://botman.io/img/botman.png">  |  <img height="188" width="198" src="https://qnabot.000webhostapp.com/qnabot/public/image/Sharkboy2_0_big.png">
 
 <h1 align="center">BotMan Studio</h1>
 
