@@ -9,7 +9,7 @@
   <title>{{ config('app.name', 'SharkyBoy BotMan') }}</title>
   <!-- Styles -->
   {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
-  <link rel="icon" type="image/png" href="{{ asset('image/Sharkyboy2_0.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('image/Sharkboy2_0.png') }}">
   @yield('head')
 </head>
 

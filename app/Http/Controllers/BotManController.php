@@ -12,6 +12,7 @@ use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Attachments\Image;
 use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
+use BotMan\BotMan\Middleware\ApiAi;
 
 // Database
 use App\Product;
@@ -37,7 +38,26 @@ class BotManController extends Controller
         // $id = $botman->getUser()->getId();
         //$botman->say('Message', $id, WebDriver::class);
 
+        $dialogflow = ApiAi::create(env('DIALOGFLOW_API'))->listenForAction();
 
+        // Apply global "received" middleware
+        $botman->middleware->received($dialogflow);
+
+        // Apply matching middleware per hears command
+        $botman->hears('.*', function (BotMan $bot) {
+            // The incoming message matched the "my_api_action" on Dialogflow
+            // Retrieve Dialogflow information:
+            $extras = $bot->getMessage()->getExtras();
+            $apiReply = $extras['apiReply'];
+            $apiAction = $extras['apiAction'];
+            $apiIntent = $extras['apiIntent'];
+
+            if($apiAction ===''){
+              $bot->reply('something is terriblely wrong....');
+              //$bot->reply(implode(' ,' , $extras));
+            }
+            $bot->reply('$apiAction = '.$apiAction);
+        })->middleware($dialogflow);
 
 
 

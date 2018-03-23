@@ -38,7 +38,9 @@ var botmanWidget = {
     frameEndpoint: '/qnabot/public/test',
     chatServer: '/qnabot/public/botman',
     'introMessage': 'Hi!<br>Welcome to the QnABotman! <br>Type /help to start',
-    bubbleAvatarUrl: 'https://botman.io/img/logo.png'
+    bubbleAvatarUrl: '/qnabot/public/image/ligtttttt.png',
+    title: 'LONGS BOT',
+    
 };
 </script>
 
