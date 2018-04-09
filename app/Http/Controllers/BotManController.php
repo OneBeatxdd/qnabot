@@ -44,7 +44,7 @@ class BotManController extends Controller
         $botman->middleware->received($dialogflow);
 
         // Apply matching middleware per hears command
-        $botman->hears('.*', function (BotMan $bot) {
+        $botman->hears('catalogue.search', function (BotMan $bot) {
             // The incoming message matched the "my_api_action" on Dialogflow
             // Retrieve Dialogflow information:
             $extras = $bot->getMessage()->getExtras();
@@ -52,11 +52,45 @@ class BotManController extends Controller
             $apiAction = $extras['apiAction'];
             $apiIntent = $extras['apiIntent'];
 
-            if($apiAction ===''){
-              $bot->reply('something is terriblely wrong....');
-              //$bot->reply(implode(' ,' , $extras));
+            $category = $extras['apiParameters']['catalogue'];
+
+            if($category==''){
+              $category_number = mt_rand(1,4);
+              $find_category = Category::find($category_number);
+              $bot->reply('You are now browsing '.$find_category->title);
+              $products = $find_category->products()->orderByRaw("RAND()")->take(5)->get();
+              foreach ($products as $product) {
+                # code...
+                // Create attachment
+                $attachment = new Image($product["Image Src"]);
+
+                // Build message object
+                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>Click Here</a>")
+                            ->withAttachment($attachment);
+
+                // Reply message object
+                $bot->reply($message);
+              }
+            }else{
+              $find_category = DB::table('categories')->where('name','like',$category.'%')->first();
+              $bot->reply('You are now browsing '.$find_category->title);
+              $find_category = Category::find($find_category->id);
+              $products = $find_category->products()->orderByRaw("RAND()")->take(5)->get();
+              foreach ($products as $product) {
+                # code...
+                // Create attachment
+                $attachment = new Image($product["Image Src"]);
+
+                // Build message object
+                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>Click Here</a>")
+                            ->withAttachment($attachment);
+
+                // Reply message object
+                $bot->reply($message);
+              }
             }
-            $bot->reply('$apiAction = '.$apiAction);
+
+
         })->middleware($dialogflow);
 
 
@@ -122,7 +156,7 @@ class BotManController extends Controller
               $attachment = new Image($product["Image Src"]);
 
               // Build message object
-              $message = OutgoingMessage::create($product->Title)
+              $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>See More</a> <br> <br>")
                           ->withAttachment($attachment);
 
               // Reply message object
@@ -139,7 +173,7 @@ class BotManController extends Controller
               $attachment = new Image($product["Image Src"]);
 
               // Build message object
-              $message = OutgoingMessage::create($product->Title)
+              $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>Click Here</a>")
                           ->withAttachment($attachment);
 
               // Reply message object
@@ -195,14 +229,27 @@ class BotManController extends Controller
       $find_category = Category::find(4);
       //dd($find_category);
 
-      $products = $find_category->products()->orderByRaw("RAND()")->take(5)->get();
+      //$products = $find_category->products()->orderByRaw("RAND()")->take(5)->get();
 
+      // $shopify = DB::table('shopify_products')->get();
+      // // $shopify = DB::table('shopify_products')->where('Handle','like','10-paper-empire-lamp-shade')->first();
+      // //
+      // // $shopify = get_object_vars($shopify);
+      // // dd($shopify["Image Src"]);
+      // foreach ($shopify as $one) {
+      //   # code...
+      //   $one     = get_object_vars($one);
+      //   dd(Product::where("Title",$one["Title"])->first()->id);
+      // }
+      // dd($shopify);
       $shopify = DB::table('shopify_products')->where('Handle','like','spotlight-gu10-3-5w')->first();
       //dd($shopify->Tags);
+      $shopify = DB::table('shopify_products')->where('Handle','like','light-bulb-8w')->first();
+      $shopify = DB::table('shopify_products')->first();
       $exploded_tags = explode(',',$shopify->Tags);
-      dd($exploded_tags);
+      //dd($exploded_tags);
       foreach($exploded_tags as $tag){
-        dd($tag);
+        dd(ltrim($tag));
       }
       foreach ($products as $product) {
         dd($product["Image Src"]);

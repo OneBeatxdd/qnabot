@@ -21,16 +21,12 @@ class CategoriesTableSeeder extends Seeder
             'title' => "Light Bulb",
         ]);
         DB::table('categories')->insert([
-            'name' => "spotlight",
-            'title' => "Spot Light",
+            'name' => "Spotlight GU10",
+            'title' => "Spotlight GU10",
         ]);
         DB::table('categories')->insert([
-            'name' => "GU10",
-            'title' => "GU 10",
-        ]);
-        DB::table('categories')->insert([
-            'name' => "MR16",
-            'title' => "MR 16",
+            'name' => "Spotlight MR16",
+            'title' => "Spotlight MR16",
         ]);
     }
 }

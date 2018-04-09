@@ -40,7 +40,8 @@ var botmanWidget = {
     'introMessage': 'Hi!<br>Welcome to the QnABotman! <br>Type /help to start',
     bubbleAvatarUrl: '/qnabot/public/image/ligtttttt.png',
     title: 'LONGS BOT',
-    
+    mainColor: '#7796A8',
+    bubbleBackground: '#7796A8'
 };
 </script>
 

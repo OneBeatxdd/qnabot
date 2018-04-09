@@ -60,12 +60,13 @@
         </div>
 
         <div class="links">
-            <a href="/botman/tinker">Tinker</a>
+            <a href="/qnabot/public/botman/tinker">Tinker</a>
             <a href="https://botman.io/docs" target="_blank">Documentation</a>
             <a href="https://twitter.com/botman_io" target="_blank">News</a>
             <a href="https://rauchg-slackin-jtdkltstsj.now.sh/" target="_blank">Slack</a>
             <a href="https://github.com/botman/botman" target="_blank">GitHub</a>
             <a href="{{ url('/test') }}">Botman(test)</a>
+            <a href="{{url('/vr')}}">Three_js vr</a>
         </div>
     </div>
 </div>

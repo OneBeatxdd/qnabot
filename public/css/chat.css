@@ -51,7 +51,7 @@ html, body {
     -ms-flex-order: 1;
     order: 1;
     border-top-right-radius: 2px;
-    background-color: #408591;
+    background-color: #7796A8;
     color: #fff;
 }
 .visitor .msg .time{
@@ -202,7 +202,7 @@ div.loading-dots .dot-lg {
     border-radius: 5px;
     margin: 5px;
     min-width: 100px;
-    background-color: #408591;
+    background-color: #7796A8;
     cursor: pointer;
     color: white;
     text-align: center;
