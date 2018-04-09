@@ -37,7 +37,7 @@
 var botmanWidget = {
     frameEndpoint: '/qnabot/public/test',
     chatServer: '/qnabot/public/botman',
-    'introMessage': 'Hi!<br>Welcome to the QnABotman! <br>Type /help to start',
+    'introMessage': "Hello! I am LONGS Q&A Chatbot. Here is what I can do for you:<br> 🌈 Feeling lucky: browse<br> 💡 See our catalogue list: list<br> 🗂 Understander our company: info<br> 👩🏻‍💻 You can also ask me any questions (i.e. What is the price of MR16 Type A)?",
     bubbleAvatarUrl: '/qnabot/public/image/ligtttttt.png',
     title: 'LONGS BOT',
     mainColor: '#7796A8',

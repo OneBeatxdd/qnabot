@@ -65,7 +65,7 @@ class BotManController extends Controller
                 $attachment = new Image($product["Image Src"]);
 
                 // Build message object
-                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>Click Here</a>")
+                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>See More</a><br><br>")
                             ->withAttachment($attachment);
 
                 // Reply message object
@@ -82,7 +82,7 @@ class BotManController extends Controller
                 $attachment = new Image($product["Image Src"]);
 
                 // Build message object
-                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>Click Here</a>")
+                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>See More</a><br><br>")
                             ->withAttachment($attachment);
 
                 // Reply message object
@@ -93,40 +93,6 @@ class BotManController extends Controller
 
         })->middleware($dialogflow);
 
-
-
-        $botman->hears('/lang', function($bot) {
-            $id = $bot->getUser()->getId();
-            // $bot->say('Message', $id, WebDriver::class);
-            $bot->reply('Hello! Userid: '.$id);
-
-            $question = Question::create("What is your prefered langauge?")
-              ->fallback('Unable to ask question')
-              ->callbackId('ask_lang')
-              ->addButtons([
-                  Button::create('中文')->value('chi'),
-                  Button::create('English')->value('eng'),
-              ]);
-
-              $bot->ask($question, function($answer,$bot) {
-                  // $bot->hears('chi', function($bot){
-                  //   $bot->startConversation(new ExampleConversation);
-                  // });
-
-
-                  if ($answer->isInteractiveMessageReply()) {
-                      if ($answer->getValue() === 'chi') {
-                        //$bot->say('chi');
-                        // $bot->startConversation(new ExampleConversation);
-                        $bot->say("chinese hasn't been developed");
-                      } else {
-                        $bot->say("type /help to start!");
-                          //$bot->startConversation(new EngConversation);
-                      }
-                  }
-              });
-
-        });
 
         // start the conversation pretent the lang pref worked ...
         // ideas for lang = load a neutral one then ask for lang then load the different link to handle
@@ -141,49 +107,11 @@ class BotManController extends Controller
           $bot->reply('Browse Random Catalogue: /browse');
           $bot->reply('Show the list of Catalogues: /list');
           $bot->reply('Information about the company: /info');
-          $bot->reply('Choose language preference: /lang');
         });
 
-        $botman->hears('/browse\s?({category})?',function($bot, $category){
-          if($category==''){
-            $category_number = mt_rand(1,4);
-            $find_category = Category::find($category_number);
-            $bot->reply('You are now browsing '.$find_category->title);
-            $products = $find_category->products()->orderByRaw("RAND()")->take(5)->get();
-            foreach ($products as $product) {
-              # code...
-              // Create attachment
-              $attachment = new Image($product["Image Src"]);
-
-              // Build message object
-              $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>See More</a> <br> <br>")
-                          ->withAttachment($attachment);
-
-              // Reply message object
-              $bot->reply($message);
-            }
-          }else{
-            $find_category = DB::table('categories')->where('name','like',$category.'%')->first();
-            $bot->reply('You are now browsing '.$find_category->title);
-            $find_category = Category::find($find_category->id);
-            $products = $find_category->products()->orderByRaw("RAND()")->take(5)->get();
-            foreach ($products as $product) {
-              # code...
-              // Create attachment
-              $attachment = new Image($product["Image Src"]);
-
-              // Build message object
-              $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>Click Here</a>")
-                          ->withAttachment($attachment);
-
-              // Reply message object
-              $bot->reply($message);
-            }
-          }
-
-        });
 
         $botman->hears('/list',function($bot){
+            $bot->reply("Here is the list of categories:");
             $categorys = Category::all();
             foreach ($categorys as $category) {
               $bot->reply("$category->title");
