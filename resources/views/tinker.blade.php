@@ -41,7 +41,9 @@ var botmanWidget = {
     bubbleAvatarUrl: '/qnabot/public/image/ligtttttt.png',
     title: 'LONGS BOT',
     mainColor: '#7796A8',
-    bubbleBackground: '#7796A8'
+    bubbleBackground: '#7796A8',
+    aboutLink: 'https://is-project-management-trial.myshopify.com/pages/about-us',
+    aboutText: 'Longs Ltd',
 };
 </script>
 

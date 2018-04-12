@@ -22,6 +22,9 @@ use App\Category;
 use App\Conversations\ExampleConversation;
 use App\Conversations\EngConversation;
 
+// shopify
+
+
 class BotManController extends Controller
 {
     /**
@@ -57,7 +60,8 @@ class BotManController extends Controller
             if($category==''){
               $category_number = mt_rand(1,4);
               $find_category = Category::find($category_number);
-              $bot->reply('You are now browsing '.$find_category->title);
+              $message = OutgoingMessage::create("You are now browsing <a href='".$find_category->link."' target='_top'>".$find_category->title."</a><br><br>");
+              $bot->reply($message);
               $products = $find_category->products()->orderByRaw("RAND()")->take(5)->get();
               foreach ($products as $product) {
                 # code...
@@ -65,7 +69,7 @@ class BotManController extends Controller
                 $attachment = new Image($product["Image Src"]);
 
                 // Build message object
-                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>See More</a><br><br>")
+                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>See More</a><br><br>$".$product["Variant Price"])
                             ->withAttachment($attachment);
 
                 // Reply message object
@@ -73,7 +77,8 @@ class BotManController extends Controller
               }
             }else{
               $find_category = DB::table('categories')->where('name','like',$category.'%')->first();
-              $bot->reply('You are now browsing '.$find_category->title);
+              $message = OutgoingMessage::create("You are now browsing <a href='".$find_category->link."' target='_top'>".$find_category->title."</a><br><br>");
+              $bot->reply($message);
               $find_category = Category::find($find_category->id);
               $products = $find_category->products()->orderByRaw("RAND()")->take(5)->get();
               foreach ($products as $product) {
@@ -82,7 +87,7 @@ class BotManController extends Controller
                 $attachment = new Image($product["Image Src"]);
 
                 // Build message object
-                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>See More</a><br><br>")
+                $message = OutgoingMessage::create($product->Title." <a href='".$product["link"]."' target='_top'>See More</a><br><br>$".$product["Variant Price"])
                             ->withAttachment($attachment);
 
                 // Reply message object
@@ -102,26 +107,27 @@ class BotManController extends Controller
             $bot->startConversation(new EngConversation);
         });
 
-        $botman->hears('/help',function($bot){
-          $bot->reply('Here are what i can do for you:');
-          $bot->reply('Browse Random Catalogue: /browse');
-          $bot->reply('Show the list of Catalogues: /list');
-          $bot->reply('Information about the company: /info');
+        $botman->hears('help',function($bot){
+          $message = OutgoingMessage::create("Hello! I am LONGS Q&A Chatbot. Here is what I can do for you:<br> 🌈 Feeling lucky: browse<br> 💡 See our catalogue list: list<br> 🗂 Understander our company: info<br> 👩🏻‍💻 You can also ask me any questions (i.e. What is the price of MR16 Type A)?");
+          $bot->reply($message);
         });
 
 
-        $botman->hears('/list',function($bot){
+        $botman->hears('list',function($bot){
             $bot->reply("Here is the list of categories:");
             $categorys = Category::all();
             foreach ($categorys as $category) {
-              $bot->reply("$category->title");
+              $message = OutgoingMessage::create("<a target='_top' href='".$category->link."'>".$category->title."</a>");
+              $bot->reply($message);
             }
         });
 
-        $botman->hears('/info',function($bot){
+        $botman->hears('info',function($bot){
             $bot->reply('LONGS Optoelectronics Company Limited');
-            $bot->reply('Check us out in https://is-project-management-trial.myshopify.com/pages/about-us');
-            $bot->reply('Or you can find us in https://is-project-management-trial.myshopify.com/pages/contact-us');
+            $message = OutgoingMessage::create("Check us out in <a target='_top' href='https://is-project-management-trial.myshopify.com/pages/about-us'>About Us</a>");
+            $bot->reply($message);
+            $message = OutgoingMessage::create("Or you can find us in <a target='_top' href='https://is-project-management-trial.myshopify.com/pages/contact-us'>Contact Us</a>");
+            $bot->reply($message);
         });
 
         $botman->listen();
@@ -185,4 +191,7 @@ class BotManController extends Controller
       dd($products);
 
     }
+
+
+
 }

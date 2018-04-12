@@ -168,6 +168,16 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+  		 * BotMan Service Providers...
+  		 */
+  		BotMan\Studio\Providers\DriverServiceProvider::class,
+  		BotMan\BotMan\BotManServiceProvider::class,
+  		BotMan\Studio\Providers\StudioServiceProvider::class,
+
+      // laravel shopify wrapper
+      "RocketCode\Shopify\ShopifyServiceProvider",
+
     ],
 
     /*
